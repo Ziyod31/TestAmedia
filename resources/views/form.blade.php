@@ -8,7 +8,7 @@
                 <div class="card-header">Заполните форму</div>
 
                 <div class="card-body">
-                    <form method="POST" action="">
+                    <form method="POST" action="{{ route('send') }}" enctype="multipart/form-data">
                         @csrf
 
                         <div class="mb-3">
@@ -33,8 +33,9 @@
 
                       <div class="mb-3">
                         <label for="formFile" class="form-label">Выбирите файл</label>
-                        <input class="form-control" type="file" id="file">
+                        <input class="form-control" type="file" id="file" name="file">
                     </div>
+                    <input type="hidden" id="status" name="status" value="not checked">
 
                     <button type="submit" class="btn btn-primary">
                         Отправить

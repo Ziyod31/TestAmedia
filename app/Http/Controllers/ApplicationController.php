@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ApplicationRequest;
 use App\Models\Application;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ApplicationController extends Controller
 {
@@ -14,8 +16,9 @@ class ApplicationController extends Controller
      */
     public function index()
     {
-        $apllications = Application::all();
-        return view('index')->with('apllications', $apllications);
+        $applications = Application::latest()->paginate(10);
+        return view('applications')->with('applications', $applications);
+
     }
 
     /**
@@ -25,7 +28,7 @@ class ApplicationController extends Controller
      */
     public function create()
     {
-        //
+        return view('form');
     }
 
     /**
@@ -34,10 +37,21 @@ class ApplicationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ApplicationRequest $request)
     {
-        //
+
+     $params = $request->all();
+
+     unset($params['file']);
+     if($request->has('file'))
+     {
+        $params['file'] = $request->file('file')->store('public/files');
     }
+
+    Application::create($params);
+
+    return redirect('/')->with('success','Заявка отправлено !');
+}
 
     /**
      * Display the specified resource.

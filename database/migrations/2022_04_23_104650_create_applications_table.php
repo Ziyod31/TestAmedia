@@ -19,7 +19,7 @@ class CreateApplicationsTable extends Migration
             $table->string('name');
             $table->string('email');
             $table->string('status')->nullable();
-            $table->string('file');
+            $table->string('file')->nullable();
             $table->string('message');
             $table->timestamps();
         });

@@ -13,14 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('form');
-});
+
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::middleware(['auth'])->group(function() {
+    Route::get('/', [App\Http\Controllers\ApplicationController::class, 'create']);
+    Route::post('/', [App\Http\Controllers\ApplicationController::class, 'store'])->name('send');
 
-Route::get('/logout', [Auth\LoginController::class, 'logout'])->name('logout');
 
-Route::get('/manager', [App\Http\Controllers\ApplicationController::class, 'index'])->name('application');
+    Route::middleware(['manager'])->group(function(){
+        Route::get('/manager', [App\Http\Controllers\ApplicationController::class, 'index']);
+    });
+
+    Route::get('/logout', [Auth\LoginController::class, 'logout'])->name('logout');
+});

@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RoleMiddleware
 {
@@ -16,10 +17,10 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::user()->user_type == 'Manager'){
+        if (Auth::user()->role == 'manager'){
             return $next($request);
         } else {
-            return redirect('/');
+            return redirect('/manager');
         }
     }
 }
